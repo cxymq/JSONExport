@@ -75,6 +75,9 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     //Holds the currently selected language
     var selectedLang : LangModel!
     
+    // 格式化后的字符串
+    var formatterStrJson: String!
+    
     //Returns the title of the selected language in the languagesPopup
     //Call only from main thread
     var selectedLanguageName : String
@@ -410,7 +413,7 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
                     }else{
                         json = unionDictionaryFromArrayElements(jsonData as! NSArray)
                     }
-                    
+                    self.formatterStrJson = self.formatterJson(dict: json as! Dictionary<String, Any>)
                     runOnUiThread{
                         self.loadSelectedLanguageModel()
                         self.files.removeAll(keepingCapacity: false)
@@ -460,8 +463,19 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         return filesBuilder
     }
     
+    //MARK: - 格式化 JSON
+    func formatterJson(dict: Dictionary<String, Any>) -> String {
+        let strData = try? JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+        if strData != nil {
+            let formatterJson = String.init(data: strData!, encoding: String.Encoding.utf8)
+            return formatterJson!
+        }
+        return "json 格式化错误"
+    }
     
-    
+    @IBAction func formatterJsonClick(_ sender: Any) {
+        self.sourceText.string = self.formatterStrJson
+    }
     
     //MARK: - NSTableViewDataSource
     func numberOfRows(in tableView: NSTableView) -> Int
