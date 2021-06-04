@@ -71,7 +71,10 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     //Connected to the languages pop up
     @IBOutlet weak var languagesPopup: NSPopUpButton!
     
-    
+    // 作者名称
+    @IBOutlet weak var authorTextField: NSTextField!
+    // 组织名称
+    @IBOutlet weak var organizationTextField: NSTextField!
     //Holds the currently selected language
     var selectedLang : LangModel!
     
@@ -236,8 +239,15 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     {
         generateClasses()
     }
-    
-    
+
+    @IBAction func authorChanged(_ sender: Any) {
+        generateClasses()
+    }
+
+    @IBAction func organizationChanged(_ sender: Any) {
+        generateClasses()
+    }
+
     @IBAction func selectedLanguageChanged(_ sender: AnyObject)
     {
         updateUIFieldsForSelectedLanguage()
@@ -462,7 +472,7 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         filesBuilder.parentClassName = parentClassName.stringValue
         return filesBuilder
     }
-    
+
     //MARK: - 格式化 JSON
     func formatterJson(dict: Dictionary<String, Any>) -> String {
         let strData = try? JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
